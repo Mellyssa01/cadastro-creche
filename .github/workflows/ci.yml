@@ -1,0 +1,33 @@
+name: ci.yml
+
+name: CI com Pytest e Ruff
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: |
+          py -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Rodar Ruff (lint)
+        run: py -m ruff check .
+
+      - name: Rodar testes com pytest
+        run: py -m pytest
