@@ -29,6 +29,8 @@ Abaixo estão detalhadas todas as alterações e adições realizadas no projeto
 ### 4. Padronização de Estilo de Código (Linting)
 * **O que foi configurado:** Integração do projeto com o linter Ruff e correção do arquivo de configuração `tests/ruff.toml`.
 * **Correção efetuada:** Foi corrigido um erro de sintaxe na propriedade de tamanho máximo de linha (ajustado para `line-length = 88`), adequando o projeto às diretrizes da PEP 8. Isso garante que a pipeline de CI no GitHub Actions execute a checagem sem falhas de carregamento de configuração.
+  ### 5. Deploy
+   
 
 ## Demonstração
 
@@ -93,6 +95,10 @@ cadastro-creche/
 │   ├── alunos.json
 │   └── __init__.py
 │
+├── docs/                     
+│   ├── index.html
+│   └── style.css
+|
 ├── tests/                  
 │   └── testes.py
 │
