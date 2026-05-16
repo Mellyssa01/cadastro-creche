@@ -1,7 +1,28 @@
 import json
 import os
+import urllib.request
 
 ARQUIVO = "src/alunos.json"
+
+
+# --- NOVA FUNÇÃO NO LUGAR CORRETO E INDENTADA ---
+def buscar_endereco_por_cep(cep):
+    """Consome a API pública ViaCEP para buscar o endereço."""
+    cep = cep.replace("-", "").replace(".", "").strip()
+    if len(cep) != 8 or not cep.isdigit():
+        return None
+
+    url = f"https://viacep.com.br/ws/{cep}/json/"
+    try:
+        with urllib.request.urlopen(url, timeout=5) as response:
+            if response.status == 200:
+                dados = json.loads(response.read().decode())
+                if "erro" not in dados:
+                    return f"{dados['logradouro']}, {dados['bairro']} - {dados['localidade']}/{dados['uf']}"
+    except Exception:
+        return None
+    return None
+
 
 def carregar_dados():
     if not os.path.exists(ARQUIVO):
@@ -9,9 +30,11 @@ def carregar_dados():
     with open(ARQUIVO, "r") as f:
         return json.load(f)
 
+
 def salvar_dados(alunos):
     with open(ARQUIVO, "w") as f:
         json.dump(alunos, f, indent=4)
+
 
 def cadastrar_aluno():
     alunos = carregar_dados()
@@ -22,6 +45,23 @@ def cadastrar_aluno():
         if a["cpf"] == cpf:
             print("Aluno já cadastrado!")
             return
+
+    opcao_cep = input("Deseja buscar o endereço por CEP? (S/N): ").strip().upper()
+    endereco_final = ""
+
+    if opcao_cep == "S":
+        cep_input = input("Digite o CEP (apenas números): ")
+        endereco_api = buscar_endereco_por_cep(cep_input)
+
+        if endereco_api:
+            print(f"Endereço encontrado: {endereco_api}")
+            numero = input("Número e Complemento: ")
+            endereco_final = f"{endereco_api}, Nº {numero}"
+        else:
+            print("CEP não encontrado ou erro na API. Digite manualmente.")
+            endereco_final = input("Endereço completo: ")
+    else:
+        endereco_final = input("Endereço: ")
 
     aluno = {
         "nome": input("Nome: "),
@@ -37,13 +77,14 @@ def cadastrar_aluno():
             "nome": input("Nome da mãe: "),
             "cpf": input("CPF da mãe: ")
         },
-        "endereco": input("Endereço: "),
+        "endereco": endereco_final,
         "telefone": input("Telefone: ")
     }
 
     alunos.append(aluno)
     salvar_dados(alunos)
     print("Aluno cadastrado com sucesso!")
+
 
 def listar_alunos():
     alunos = carregar_dados()
@@ -57,6 +98,7 @@ def listar_alunos():
         print(f"CPF: {a['cpf']}")
         print(f"Turma: {a['turma']}")
 
+
 def buscar_aluno():
     alunos = carregar_dados()
     cpf = input("CPF: ")
@@ -67,6 +109,7 @@ def buscar_aluno():
             return
 
     print("Aluno não encontrado.")
+
 
 def atualizar_aluno():
     alunos = carregar_dados()
@@ -82,6 +125,7 @@ def atualizar_aluno():
 
     print("Aluno não encontrado.")
 
+
 def remover_aluno():
     alunos = carregar_dados()
     cpf = input("CPF: ")
@@ -89,6 +133,7 @@ def remover_aluno():
     novos = [a for a in alunos if a["cpf"] != cpf]
     salvar_dados(novos)
     print("Removido!")
+
 
 def menu():
     while True:
@@ -115,6 +160,7 @@ def menu():
             break
         else:
             print("Opção inválida")
+
 
 if __name__ == "__main__":
     menu()
