@@ -5,6 +5,30 @@
 Sistema simples em Python para registrar, consultar e gerenciar alunos, facilitando o controle acadêmico de uma creche em pequenos contextos educacionais.
 
 ---
+## Atualização
+## Evolução da Aplicação — Etapa Intermediária
+
+Nesta etapa intermediária, o foco do projeto foi a evolução estruturada e a entrega contínua do sistema, conectando a aplicação a serviços externos, garantindo a qualidade do código com testes automatizados e aplicando linters para padronização.
+
+Abaixo estão detalhadas todas as alterações e adições realizadas no projeto:
+
+### 1. Integração com API Pública
+* **O que foi adicionado:** Implementação da função `buscar_endereco_por_cep(cep)` no arquivo `src/main.py`.
+* **Funcionamento técnico:** A função consome a API REST pública do ViaCEP de forma síncrona através da biblioteca nativa `urllib.request`. Ela realiza uma requisição HTTP GET utilizando blocos de try-except para tratar o retorno em formato JSON.
+* **Impacto no fluxo:** Durante o cadastro do aluno, o sistema agora oferece a opção de autocompletar o endereço. Se o usuário fornecer um CEP válido, o programa extrai as chaves de logradouro, bairro, localidade e UF para preencher o campo automaticamente.
+
+### 2. Testes de Integração Automatizados
+* **O que foi adicionado:** Criação de novos testes focados na validação da comunicação externa (`test_busca_cep_valido_integracao` e `test_busca_cep_invalido_integracao`).
+* **Funcionamento técnico:** Diferente dos testes unitários ou funcionais que rodam isolados localmente, estes testes de integração fazem requisições reais de rede para os servidores do ViaCEP para garantir que o contrato da API não quebrou e que o parsing dos dados continua correto.
+* **Ajustes nos testes existentes:** O teste funcional anterior (`test_cpf_invalido_funcional`) foi atualizado com novos valores na lista de inputs simulados via `unittest.mock.patch`, adequando o mock ao novo fluxo de perguntas do terminal.
+
+### 3. Tratamento de Exceções e Resiliência
+* **O que foi alterado:** A função `cadastrar_aluno` foi modificada para receber o retorno tratado da API de CEP.
+* **Mecanismo de fallback:** Se a API falhar, o CEP não existir ou o sistema estiver sem conectividade com a internet, a aplicação captura o erro de forma segura através de exceções genéricas e permite o preenchimento manual, garantindo que o programa não sofra crash em tempo de execução.
+
+### 4. Padronização de Estilo de Código (Linting)
+* **O que foi configurado:** Integração do projeto com o linter Ruff e correção do arquivo de configuração `tests/ruff.toml`.
+* **Correção efetuada:** Foi corrigido um erro de sintaxe na propriedade de tamanho máximo de linha (ajustado para `line-length = 88`), adequando o projeto às diretrizes da PEP 8. Isso garante que a pipeline de CI no GitHub Actions execute a checagem sem falhas de carregamento de configuração.
 
 ## Demonstração
 
@@ -102,10 +126,10 @@ py src/main.py
 ## Como executar os testes
 
 ```
-py -m tests.testes
+py -m pytest
 ```
 ##Como executar ruff
-ruff check .
+py -m ruff check .
 ```
 
 #Licença
