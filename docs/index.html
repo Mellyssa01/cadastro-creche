@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Execução | Sistema Cadastro Creche</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Sistema Cadastro Creche</h1>
+            <p>Interface de documentação e guia de implantação da aplicação CLI</p>
+        </header>
+
+        <div class="card">
+            <span class="badge">Etapa Intermediária</span>
+            <h2>Sobre o Projeto</h2>
+            <p>Este sistema é uma aplicação em linha de comando (CLI) desenvolvida em Python para gerenciar o fluxo de registros de alunos em uma creche. Na presente etapa, a arquitetura foi integrada à API externa do ViaCEP para validação e preenchimento automático de endereços locais através do CEP.</p>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <strong>Gerenciamento Local</strong>
+                    Persistência de dados estruturada in formato JSON dentro do diretório do projeto.
+                </div>
+                <div class="feature-item">
+                    <strong>Integração via API</strong>
+                    Busca assíncrona de logradouros, bairros e localidades usando a API pública ViaCEP.
+                </div>
+                <div class="feature-item">
+                    <strong>Análise Estática</strong>
+                    Formatação estrita e checagem de erros configurada através do Ruff (PEP 8).
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Como Executar a Aplicação</h2>
+            <ul class="step-list">
+                <li>
+                    <div class="step-title">1. Clonar o repositório do GitHub</div>
+                    <p>Abra o terminal do seu ambiente local e realize o clone da branch de entrega:</p>
+                    <pre>git clone https://github.com/Mellyssa01/cadastro-creche.git&#10;cd cadastro-creche</pre>
+                </li>
+                <li>
+                    <div class="step-title">2. Rodar a aplicação CLI</div>
+                    <p>Execute o script principal utilizando o interpretador Python nativo:</p>
+                    <pre>py src/main.py</pre>
+                </li>
+                <li>
+                    <div class="step-title">3. Executar o conjunto de testes</div>
+                    <p>Para rodar os testes unitários e de integração utilizando o ecossistema Pytest:</p>
+                    <pre>py -m pytest</pre>
+                </li>
+                <li>
+                    <div class="step-title">4. Executar a checagem com o Ruff</div>
+                    <p>Para garantir que o padrão estético do código está de acordo com as especificações:</p>
+                    <pre>py -m ruff check .</pre>
+                </li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Desenvolvido como projeto prático para avaliação acadêmica.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
